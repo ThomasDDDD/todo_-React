@@ -1,3 +1,6 @@
+import AppWorkingPage from "./AppWorkingPage.jsx";
+import OptionsPage from "./OptionsPage.jsx";
+
 /*
 
     Erstelle eine Todo-Liste. 
@@ -18,39 +21,16 @@
         für ganze Components erstelle eine jsx Datei
     Dies ist aber nur eine Empfehlung und keine Pflicht.
 */
+const taskType = ["privat", "job"];
 
 const Todo = () => {
-
-    return(
-        <>
-            <h1>Todo</h1>
-
-            <div>
-                <input type="text" placeholder="Add todo" />
-                <button>Add</button>
-            </div>
-
-            <div>
-                <ul>
-                    <li>
-                        <input type="checkbox" />
-                        <span>Todo 1</span>
-                        <button>Delete</button>
-                    </li>
-                    <li>
-                        <input type="checkbox" />
-                        <span>Todo 2</span>
-                        <button>Delete</button>
-                    </li>
-                    <li>
-                        <input type="checkbox" />
-                        <span>Todo 3</span>
-                        <button>Delete</button>
-                    </li>
-                </ul>
-            </div>
-        </>
-    )
-}
+  return (
+    <>
+      <h1>Your personal Todo App</h1>
+      <OptionsPage />
+      {/* <AppWorkingPage taskType={taskType} /> */}
+    </>
+  );
+};
 
 export default Todo;
