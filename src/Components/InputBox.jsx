@@ -1,7 +1,6 @@
 function InputBox(props) {
   console.log(props);
   const { taskType } = props;
-  console.log(taskType);
   return (
     <div>
       <form>
