@@ -1,9 +1,9 @@
 function TaskBoxes({ tasks }) {
   return (
     <>
-      {tasks.map((task) => {
+      {tasks.map((task, i) => {
         return (
-          <div>
+          <div key={i}>
             <h2>{task}</h2>
             <ul>{/* <TasklistFor /> */}</ul>
           </div>
