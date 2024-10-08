@@ -1,22 +1,24 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 
-function safeTaskList(taskListArr) {
-  localStorage.setItem("TaskList", JSON.stringify(taskListArr));
-}
-function loadTaskList(taskListArr) {
-  if (localStorage.getItem("TaskList")) {
-    const loadetTaskList = JSON.parse(localStorage.getItem("TaskList"));
-    return loadetTaskList;
-  } else {
-    console.log("no data to load");
-    return [...taskListArr];
-  }
-}
-
 function OptionsPage() {
   const [taskListArr, setTaskListArr] = useState(["private", "job"]);
   const [inputValue, setInputvalue] = useState("");
+
+  function safeTaskList(taskListArr) {
+    localStorage.setItem("TaskList", JSON.stringify(taskListArr));
+  }
+
+  function loadTaskList(taskListArr) {
+    if (localStorage.getItem("TaskList")) {
+      const loadetTaskList = JSON.parse(localStorage.getItem("TaskList"));
+      setInputvalue("");
+      return loadetTaskList;
+    } else {
+      console.log("no data to load");
+      return [...taskListArr];
+    }
+  }
 
   useEffect(() => {
     setTaskListArr(loadTaskList(taskListArr));
