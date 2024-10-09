@@ -29,7 +29,6 @@ function OptionsPage() {
       <h1>Options</h1>
       <p>Welcome, at first set up your todo task types. We pre set up "private" and "job" for you.</p>
       <input onChange={(e) => setInputvalue(e.currentTarget.value)} type="text" placeholder="Add a Tasktype"></input>
-
       <button
         onClick={() => {
           setTaskListArr([...taskListArr, inputValue]);
@@ -38,12 +37,12 @@ function OptionsPage() {
       >
         Add your task type
       </button>
-
       <p>Or remove present from your List</p>
       <select
         value={inputValue}
         onChange={(e) => {
           setInputvalue(e.currentTarget.value);
+          console.log(e.currentTarget.value);
         }}
       >
         <option>Select</option>
@@ -70,11 +69,8 @@ function OptionsPage() {
       >
         Remove your task type
       </button>
-
       <button onClick={() => safeTaskList(taskListArr)}>safe task list</button>
-
       <button onClick={() => setTaskListArr(loadTaskList(taskListArr))}>load task list</button>
-
       <div>
         <NavLink to="/">zurück</NavLink>
       </div>

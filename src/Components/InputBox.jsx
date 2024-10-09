@@ -1,6 +1,25 @@
-function InputBox(props) {
+import { useEffect, useState } from "react";
+
+function InputBox({ ...props }) {
   console.log(props);
-  const { taskType } = props;
+  const { taskTypes } = props;
+  const [tasksObjArr, setTasksObjArr] = useState([]);
+  const [inputValue, setInputValue] = useState("");
+
+  function buildTasksObjArr(tasksObjArr) {
+    const newTasksObjArr = [...tasksObjArr];
+    taskTypes.map((tasktype, i) => {
+      newTasksObjArr.push({ tasktype });
+    });
+    console.log(newTasksObjArr);
+
+    return newTasksObjArr;
+  }
+
+  useEffect(() => {
+    setTasksObjArr(buildTasksObjArr(tasksObjArr));
+  }, []);
+
   return (
     <div>
       <form>
@@ -16,15 +35,25 @@ function InputBox(props) {
           <option value="critical">kritisch</option>
         </select>
         <label htmlFor="taskType">Aufgaben Typ: </label>
-        <select name="TaskType" id="taskType">
-          <option disabled defaultValue>
-            Select
-          </option>
-          {taskType.map((task) => {
-            return <option value={task}>{task}</option>;
+        <select
+          name="TaskType"
+          id="taskType"
+          value={inputValue}
+          onChange={(e) => {
+            e.preventDefault();
+            setInputValue(e.value);
+          }}
+        >
+          <option>Select</option>
+          {taskTypes.map((task, i) => {
+            return (
+              <option key={(i + 1) * Math.random()} value={task}>
+                {task}
+              </option>
+            );
           })}
         </select>
-        <button>Aufgabe hinzufügen</button>
+        <button type="submit">Aufgabe hinzufügen</button>
       </form>
     </div>
   );

@@ -1,13 +1,27 @@
+import { useEffect, useState } from "react";
 import InputBox from "../Components/InputBox.jsx";
 import TaskBoxes from "../Components/TaskBoxes.jsx";
 
-function AppWorkingPage(props) {
-  const { taskType } = props;
-  console.log(taskType);
+function AppWorkingPage() {
+  const [taskListArr, setTaskListArr] = useState(["private", "job"]);
+  function loadTaskList(taskListArr) {
+    if (localStorage.getItem("TaskList")) {
+      const loadetTaskList = JSON.parse(localStorage.getItem("TaskList"));
+      return loadetTaskList;
+    } else {
+      console.log("no data to load");
+      return [...taskListArr];
+    }
+  }
+
+  useEffect(() => {
+    setTaskListArr(loadTaskList(taskListArr));
+  }, []);
+
   return (
     <>
-      <InputBox taskType={taskType} />
-      <TaskBoxes tasks={taskType} />
+      <InputBox taskTypes={taskListArr} />
+      {/* <TaskBoxes tasks={taskListArr} /> */}
     </>
   );
 }
