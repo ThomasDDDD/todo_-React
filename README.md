@@ -1,4 +1,5 @@
 # todo_app_exercise
+
 Project for student exercises.
 
 # IMPORTANT / WICHTIG
@@ -7,3 +8,5 @@ Project for student exercises.
 
 Mit FORK habt ihr das Repository auf eurem eigenen Github-Repository über dass ihr dann Clonen und arbeiten könnt.
 Dort könnt ihr wie gewohnt dann eurem Arbeitsflow mit commits arbeiten.
+
+zum merken: new Date(dasZuFormatierendeDate).toLocaleDateString()

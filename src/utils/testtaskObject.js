@@ -3,12 +3,12 @@ const tasks = [
     tasktype: "Arbeit",
     tasks: [
       {
-        task: "emails beantworten",
+        taskname: "emails beantworten",
         prio: "medium",
         due: "08/10/2024-08:45",
       },
       {
-        task: "präsentation vorbereiten",
+        taskname: "präsentation vorbereiten",
         prio: "high",
         due: "08/10/2024-08:45",
       },

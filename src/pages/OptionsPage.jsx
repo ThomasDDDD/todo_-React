@@ -1,65 +1,89 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 
 function OptionsPage() {
-  const [taskListArr, setTaskListArr] = useState(["private", "job"]);
-  const [inputValue, setInputvalue] = useState("");
+  const [taskObjArr, setTaskObjArr] = useState([
+    { tasktype: "private", tasks: [], tasktypeId: Math.floor(Math.random() * 10000) },
+    { tasktype: "job", tasks: [], tasktypeId: Math.floor(Math.random() * 10000) },
+  ]);
+  const [inputValueToAdd, setInputvalueToAdd] = useState("");
+  const [inputValueToRem, setInputvalueToRem] = useState({});
+  const inputAdd = useRef(null);
 
-  function safeTaskList(taskListArr) {
-    localStorage.setItem("TaskList", JSON.stringify(taskListArr));
+  function safeTaskList(taskObjArr) {
+    localStorage.setItem("TaskList", JSON.stringify(taskObjArr));
+    setInputvalueToAdd("");
   }
 
-  function loadTaskList(taskListArr) {
+  function loadTaskList(taskObjArr) {
     if (localStorage.getItem("TaskList")) {
-      const loadetTaskList = JSON.parse(localStorage.getItem("TaskList"));
-      setInputvalue("");
-      return loadetTaskList;
+      const loadetTaskObjArr = JSON.parse(localStorage.getItem("TaskList"));
+      setInputvalueToAdd("");
+      return loadetTaskObjArr;
     } else {
       console.log("no data to load");
-      return [...taskListArr];
+      return [...taskObjArr];
     }
+  }
+  function handleKeyDown(event) {
+    if (event.key === "Enter") {
+      toSetTaskObjArr();
+    }
+  }
+  function toSetTaskObjArr() {
+    if (inputValueToAdd) {
+      setTaskObjArr([
+        ...taskObjArr,
+        { tasktype: inputValueToAdd, tasks: [], tasktypeId: Math.floor(Math.random() * 10000) },
+      ]);
+    }
+    inputAdd.current.value = "";
   }
 
   useEffect(() => {
-    setTaskListArr(loadTaskList(taskListArr));
+    setTaskObjArr(loadTaskList(taskObjArr));
   }, []);
 
   return (
     <>
       <h1>Options</h1>
       <p>Welcome, at first set up your todo task types. We pre set up "private" and "job" for you.</p>
-      <input onChange={(e) => setInputvalue(e.currentTarget.value)} type="text" placeholder="Add a Tasktype"></input>
+      <input
+        ref={inputAdd}
+        onChange={(e) => setInputvalueToAdd(e.currentTarget.value)}
+        type="text"
+        placeholder="Add a Tasktype"
+        onKeyDown={handleKeyDown}
+      ></input>
       <button
         onClick={() => {
-          setTaskListArr([...taskListArr, inputValue]);
-          console.log(taskListArr);
+          toSetTaskObjArr();
         }}
       >
         Add your task type
       </button>
       <p>Or remove present from your List</p>
       <select
-        value={inputValue}
+        value={inputValueToRem.tasktype}
         onChange={(e) => {
-          setInputvalue(e.currentTarget.value);
-          console.log(e.currentTarget.value);
+          setInputvalueToRem(e.target.value);
         }}
       >
         <option>Select</option>
-        {taskListArr.map((task, i) => {
+        {taskObjArr.map((tasktypeObj) => {
           return (
-            <option key={i * Math.random()} value={task}>
-              {task}
+            <option key={tasktypeObj.tasktypeId} value={tasktypeObj.tasktype}>
+              {tasktypeObj.tasktype}
             </option>
           );
         })}
       </select>
       <button
         onClick={() => {
-          setTaskListArr(() => {
-            const taskList = [...taskListArr];
-            console.log(inputValue);
-            const i = taskList.indexOf(inputValue);
+          setTaskObjArr(() => {
+            const taskList = [...taskObjArr];
+            const newTaskObjToDelete = taskList.find((taskObj) => taskObj.tasktype === inputValueToRem);
+            const i = taskList.indexOf(newTaskObjToDelete);
             if (i !== -1) {
               taskList.splice(i, 1);
             }
@@ -69,8 +93,8 @@ function OptionsPage() {
       >
         Remove your task type
       </button>
-      <button onClick={() => safeTaskList(taskListArr)}>safe task list</button>
-      <button onClick={() => setTaskListArr(loadTaskList(taskListArr))}>load task list</button>
+      <button onClick={() => safeTaskList(taskObjArr)}>safe task list</button>
+      <button onClick={() => setTaskObjArr(loadTaskList(taskObjArr))}>load task list</button>
       <div>
         <NavLink to="/">zurück</NavLink>
       </div>
