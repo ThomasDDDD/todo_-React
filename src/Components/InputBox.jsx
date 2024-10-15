@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 function InputBox() {
   const [taskObjArr, setTaskObjArr] = useState([]);
   const [inputValue, setInputValue] = useState("");
-  const [task, setTask] = useState({});
 
   function loadTaskList(taskObjArr) {
     if (localStorage.getItem("TaskList")) {
@@ -30,11 +29,7 @@ function InputBox() {
       due: e.target.elements.dueDate.value,
       taskId: Math.floor(taskToEdit.tasktypeId * Math.random() * 1000),
     };
-    console.log(newTask);
-    setTask(newTask);
-    console.log(task);
-
-    taskToEdit.tasks = [...taskToEdit.tasks, task];
+    taskToEdit.tasks = [...taskToEdit.tasks, newTask];
 
     console.log(taskToEdit);
 
