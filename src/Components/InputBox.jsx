@@ -15,13 +15,8 @@ function InputBox() {
   }
 
   function addTask(e) {
-    console.log(e.target.elements.taskname.value);
-    console.log(e.target.elements.prio.value);
-    console.log(e.target.elements.tasktype.value);
-
     const newTaskObjArr = [...taskObjArr];
     const taskToEdit = newTaskObjArr.find((taskObj) => e.target.elements.tasktype.value === taskObj.tasktype);
-    console.log(taskToEdit);
 
     const newTask = {
       taskname: e.target.elements.taskname.value,
@@ -31,18 +26,13 @@ function InputBox() {
     };
     taskToEdit.tasks = [...taskToEdit.tasks, newTask];
 
-    console.log(taskToEdit);
-
     const taskList = [...taskObjArr];
     const newTaskObjToEdit = taskList.find((taskObj) => taskObj.tasktype === taskToEdit.tasktype);
     const i = taskList.indexOf(newTaskObjToEdit);
     if (i !== -1) {
       taskList.splice(i, 1, taskToEdit);
     }
-    console.log(taskList);
     return taskList;
-
-    // setTaskObjArr(newTaskObjArr);
   }
 
   useEffect(() => {
