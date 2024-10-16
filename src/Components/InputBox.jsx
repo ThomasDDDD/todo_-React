@@ -14,6 +14,10 @@ function InputBox() {
     }
   }
 
+  function safeTaskList(taskObjArr) {
+    localStorage.setItem("TaskList", JSON.stringify(taskObjArr));
+  }
+
   function addTask(e) {
     const newTaskObjArr = [...taskObjArr];
     const taskToEdit = newTaskObjArr.find((taskObj) => e.target.elements.tasktype.value === taskObj.tasktype);
@@ -32,7 +36,26 @@ function InputBox() {
     if (i !== -1) {
       taskList.splice(i, 1, taskToEdit);
     }
+    safeTaskList(taskList);
     return taskList;
+  }
+
+  function deleteTask(deleteObj) {
+    console.log(deleteObj);
+    console.log(taskObjArr);
+    const taskTypeToEdit = taskObjArr.find((tasktype) => tasktype.tasktypeId === deleteObj.tasktypeId);
+    const i = taskObjArr.indexOf(taskTypeToEdit);
+    console.log(taskTypeToEdit);
+    console.log(i);
+    const tasksArrToPutIn = taskTypeToEdit.tasks.filter((task) => task.taskId !== deleteObj.taskId);
+    console.log(tasksArrToPutIn);
+    const newTaskObjToPutIn = { ...taskTypeToEdit, tasks: tasksArrToPutIn };
+    const newTaskObjArr = [...taskObjArr];
+    newTaskObjArr.splice(i, 1, newTaskObjToPutIn);
+
+    // const newTaskObjArr = taskObjArr.filter(taskType);
+    safeTaskList(newTaskObjArr);
+    return newTaskObjArr;
   }
 
   useEffect(() => {
@@ -79,10 +102,22 @@ function InputBox() {
         <button type="submit">Aufgabe hinzufügen</button>
       </form>
       {taskObjArr?.map((obj) => (
-        <div key={obj.tasktypeId}>
-          <h4>{obj.tasktype}</h4>
+        <div className="typeBox" key={obj.tasktypeId}>
+          <h2>{obj.tasktype}</h2>
           {obj.tasks?.map((task) => (
-            <p key={task.taskId}>{task.taskname}</p>
+            <div className="taskBox" key={task.taskId}>
+              <h4>{task.taskname}</h4>
+
+              <input type="checkbox" id={task.taskId}></input>
+              <label htmlFor={task.taskId}>Erledigt</label>
+              <button onClick={() => setTaskObjArr(deleteTask({ tasktypeId: obj.tasktypeId, taskId: task.taskId }))}>
+                Task Entfernen
+              </button>
+              <p>{`Priorität: ${task.prio}`}</p>
+              <p>{`Fällig am: ${new Date(task.due).toLocaleDateString()} um: ${new Date(task.due)
+                .toLocaleTimeString()
+                .slice(0, 5)} Uhr`}</p>
+            </div>
           ))}
         </div>
       ))}
