@@ -1,30 +1,29 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
+import { AppContext } from "../utils/AppContext";
 
 function OptionsPage() {
-  const [taskObjArr, setTaskObjArr] = useState([
-    { tasktype: "private", tasks: [], tasktypeId: Math.floor(Math.random() * 10000) },
-    { tasktype: "job", tasks: [], tasktypeId: Math.floor(Math.random() * 10000) },
-  ]);
+  const { taskObjArr, setTaskObjArr, loadTaskList, safeTaskList } = useContext(AppContext);
+
   const [inputValueToAdd, setInputvalueToAdd] = useState("");
   const [inputValueToRem, setInputvalueToRem] = useState({});
   const inputAdd = useRef(null);
 
-  function safeTaskList(taskObjArr) {
-    localStorage.setItem("TaskList", JSON.stringify(taskObjArr));
-    setInputvalueToAdd("");
-  }
+  // function safeTaskList(taskObjArr) {
+  //   localStorage.setItem("TaskList", JSON.stringify(taskObjArr));
+  //   setInputvalueToAdd("");
+  // }
 
-  function loadTaskList(taskObjArr) {
-    if (localStorage.getItem("TaskList")) {
-      const loadetTaskObjArr = JSON.parse(localStorage.getItem("TaskList"));
-      setInputvalueToAdd("");
-      return loadetTaskObjArr;
-    } else {
-      console.log("no data to load");
-      return [...taskObjArr];
-    }
-  }
+  // function loadTaskList(taskObjArr) {
+  //   if (localStorage.getItem("TaskList")) {
+  //     const loadetTaskObjArr = JSON.parse(localStorage.getItem("TaskList"));
+  //     setInputvalueToAdd("");
+  //     return loadetTaskObjArr;
+  //   } else {
+  //     console.log("no data to load");
+  //     return [...taskObjArr];
+  //   }
+  // }
   function handleKeyDown(event) {
     if (event.key === "Enter") {
       toSetTaskObjArr();
@@ -96,7 +95,9 @@ function OptionsPage() {
       <button onClick={() => safeTaskList(taskObjArr)}>safe task list</button>
       <button onClick={() => setTaskObjArr(loadTaskList(taskObjArr))}>load task list</button>
       <div>
-        <NavLink to="/">zurück</NavLink>
+        <NavLink onClick={() => safeTaskList(taskObjArr)} to="/">
+          zurück
+        </NavLink>
       </div>
     </>
   );

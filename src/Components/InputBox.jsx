@@ -1,22 +1,29 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
+import { AppContext } from "../utils/AppContext";
+import { NavLink } from "react-router-dom";
 
 function InputBox() {
-  const [taskObjArr, setTaskObjArr] = useState([]);
+  // const [taskObjArr, setTaskObjArr] = useState([
+  //   { tasktype: "private", tasks: [], tasktypeId: Math.floor(Math.random() * 10000) },
+  //   { tasktype: "job", tasks: [], tasktypeId: Math.floor(Math.random() * 10000) },
+  // ]);
+  const { taskObjArr, setTaskObjArr, loadTaskList, safeTaskList } = useContext(AppContext);
   const [inputValue, setInputValue] = useState("");
+  const inputAdd = useRef(null);
 
-  function loadTaskList(taskObjArr) {
-    if (localStorage.getItem("TaskList")) {
-      const loadetTaskObjArr = JSON.parse(localStorage.getItem("TaskList"));
-      return loadetTaskObjArr;
-    } else {
-      console.log("no data to load");
-      return [...taskObjArr];
-    }
-  }
+  // function loadTaskList(taskObjArr) {
+  //   if (localStorage.getItem("TaskList")) {
+  //     const loadetTaskObjArr = JSON.parse(localStorage.getItem("TaskList"));
+  //     return loadetTaskObjArr;
+  //   } else {
+  //     console.log("no data to load");
+  //     return [...taskObjArr];
+  //   }
+  // }
 
-  function safeTaskList(taskObjArr) {
-    localStorage.setItem("TaskList", JSON.stringify(taskObjArr));
-  }
+  // function safeTaskList(taskObjArr) {
+  //   localStorage.setItem("TaskList", JSON.stringify(taskObjArr));
+  // }
 
   function addTask(e) {
     const newTaskObjArr = [...taskObjArr];
@@ -37,23 +44,18 @@ function InputBox() {
       taskList.splice(i, 1, taskToEdit);
     }
     safeTaskList(taskList);
+    inputAdd.current.value = "";
     return taskList;
   }
 
   function deleteTask(deleteObj) {
-    console.log(deleteObj);
-    console.log(taskObjArr);
     const taskTypeToEdit = taskObjArr.find((tasktype) => tasktype.tasktypeId === deleteObj.tasktypeId);
     const i = taskObjArr.indexOf(taskTypeToEdit);
-    console.log(taskTypeToEdit);
-    console.log(i);
     const tasksArrToPutIn = taskTypeToEdit.tasks.filter((task) => task.taskId !== deleteObj.taskId);
-    console.log(tasksArrToPutIn);
     const newTaskObjToPutIn = { ...taskTypeToEdit, tasks: tasksArrToPutIn };
     const newTaskObjArr = [...taskObjArr];
     newTaskObjArr.splice(i, 1, newTaskObjToPutIn);
 
-    // const newTaskObjArr = taskObjArr.filter(taskType);
     safeTaskList(newTaskObjArr);
     return newTaskObjArr;
   }
@@ -70,7 +72,7 @@ function InputBox() {
           setTaskObjArr(addTask(e));
         }}
       >
-        <input type="text" name="taskname" placeholder="Aufgabe" />
+        <input ref={inputAdd} type="text" name="taskname" placeholder="Aufgabe" />
         <label htmlFor="taskType">Aufgaben Typ: </label>
         <select
           name="tasktype"
@@ -121,6 +123,9 @@ function InputBox() {
           ))}
         </div>
       ))}
+      <NavLink onClick={() => safeTaskList(taskObjArr)} to="/">
+        zurück
+      </NavLink>
     </div>
   );
 }
