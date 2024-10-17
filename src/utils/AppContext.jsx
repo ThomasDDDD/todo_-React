@@ -22,8 +22,20 @@ function AppProvider({ children }) {
     localStorage.setItem("TaskList", JSON.stringify(taskObjArr));
   }
 
+  function deleteTask(deleteObj) {
+    const taskTypeToEdit = taskObjArr.find((tasktype) => tasktype.tasktypeId === deleteObj.tasktypeId);
+    const i = taskObjArr.indexOf(taskTypeToEdit);
+    const tasksArrToPutIn = taskTypeToEdit.tasks.filter((task) => task.taskId !== deleteObj.taskId);
+    const newTaskObjToPutIn = { ...taskTypeToEdit, tasks: tasksArrToPutIn };
+    const newTaskObjArr = [...taskObjArr];
+    newTaskObjArr.splice(i, 1, newTaskObjToPutIn);
+
+    safeTaskList(newTaskObjArr);
+    return newTaskObjArr;
+  }
+
   return (
-    <AppContext.Provider value={{ taskObjArr, setTaskObjArr, loadTaskList, safeTaskList }}>
+    <AppContext.Provider value={{ taskObjArr, setTaskObjArr, loadTaskList, safeTaskList, deleteTask }}>
       {children}
     </AppContext.Provider>
   );

@@ -1,5 +1,3 @@
-import AppWorkingPage from "./AppWorkingPage.jsx";
-import OptionsPage from "./OptionsPage.jsx";
 
 /*
 
@@ -21,16 +19,4 @@ import OptionsPage from "./OptionsPage.jsx";
         für ganze Components erstelle eine jsx Datei
     Dies ist aber nur eine Empfehlung und keine Pflicht.
 */
-const taskType = ["privat", "job"];
 
-const Todo = () => {
-  return (
-    <>
-      <h1>Your personal Todo App</h1>
-      <OptionsPage />
-      {/* <AppWorkingPage taskType={taskType} /> */}
-    </>
-  );
-};
-
-export default Todo;

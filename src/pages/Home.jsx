@@ -1,14 +1,9 @@
-import { NavLink } from "react-router-dom";
+import NavigationBar from "../Components/NavigationBar";
 
 function Home() {
   return (
     <>
-      <div>
-        <NavLink to="ToDo">ToDo App starten</NavLink>
-      </div>
-      <div>
-        <NavLink to="options">Optionen</NavLink>
-      </div>
+      <NavigationBar />
     </>
   );
 }

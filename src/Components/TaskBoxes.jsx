@@ -1,30 +1,17 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { AppContext } from "../utils/AppContext";
 
-function TaskBoxes({ tasks }) {
-  const [taskObjArr, setTaskObjArr] = useState([]);
-
-  function loadTaskList(taskObjArr) {
-    if (localStorage.getItem("TaskList")) {
-      const loadetTaskObjArr = JSON.parse(localStorage.getItem("TaskList"));
-      return loadetTaskObjArr;
-    } else {
-      console.log("no data to load");
-      return [...taskObjArr];
-    }
-  }
-
-  function safeTaskList(taskObjArr) {
-    localStorage.setItem("TaskList", JSON.stringify(taskObjArr));
-  }
+function TaskBoxes() {
+  const { taskObjArr, setTaskObjArr, loadTaskList, safeTaskList, deleteTask } = useContext(AppContext);
 
   useEffect(() => {
     setTaskObjArr(loadTaskList(taskObjArr));
   }, []);
 
   return (
-    <>
+    <div className="taskTypeBoxContainer">
       {taskObjArr?.map((obj) => (
-        <div className="typeBox" key={obj.tasktypeId}>
+        <div className="taskBoxContainer" key={obj.tasktypeId}>
           <h2>{obj.tasktype}</h2>
           {obj.tasks?.map((task) => (
             <div className="taskBox" key={task.taskId}>
@@ -43,7 +30,7 @@ function TaskBoxes({ tasks }) {
           ))}
         </div>
       ))}
-    </>
+    </div>
   );
 }
 

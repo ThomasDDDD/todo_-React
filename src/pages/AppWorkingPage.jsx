@@ -5,7 +5,7 @@ function AppWorkingPage() {
   return (
     <>
       <InputBox />
-      {/* <TaskBoxes /> */}
+      <TaskBoxes />
     </>
   );
 }

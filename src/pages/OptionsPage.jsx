@@ -4,26 +4,10 @@ import { AppContext } from "../utils/AppContext";
 
 function OptionsPage() {
   const { taskObjArr, setTaskObjArr, loadTaskList, safeTaskList } = useContext(AppContext);
-
   const [inputValueToAdd, setInputvalueToAdd] = useState("");
   const [inputValueToRem, setInputvalueToRem] = useState({});
   const inputAdd = useRef(null);
 
-  // function safeTaskList(taskObjArr) {
-  //   localStorage.setItem("TaskList", JSON.stringify(taskObjArr));
-  //   setInputvalueToAdd("");
-  // }
-
-  // function loadTaskList(taskObjArr) {
-  //   if (localStorage.getItem("TaskList")) {
-  //     const loadetTaskObjArr = JSON.parse(localStorage.getItem("TaskList"));
-  //     setInputvalueToAdd("");
-  //     return loadetTaskObjArr;
-  //   } else {
-  //     console.log("no data to load");
-  //     return [...taskObjArr];
-  //   }
-  // }
   function handleKeyDown(event) {
     if (event.key === "Enter") {
       toSetTaskObjArr();
@@ -38,13 +22,22 @@ function OptionsPage() {
     }
     inputAdd.current.value = "";
   }
+  function removeTaskType() {
+    const taskList = [...taskObjArr];
+    const newTaskObjToDelete = taskList.find((taskObj) => taskObj.tasktype === inputValueToRem);
+    const i = taskList.indexOf(newTaskObjToDelete);
+    if (i !== -1) {
+      taskList.splice(i, 1);
+    }
+    return taskList;
+  }
 
   useEffect(() => {
     setTaskObjArr(loadTaskList(taskObjArr));
   }, []);
 
   return (
-    <>
+    <div className="OptionsPage">
       <h1>Options</h1>
       <p>Welcome, at first set up your todo task types. We pre set up "private" and "job" for you.</p>
       <input
@@ -79,15 +72,7 @@ function OptionsPage() {
       </select>
       <button
         onClick={() => {
-          setTaskObjArr(() => {
-            const taskList = [...taskObjArr];
-            const newTaskObjToDelete = taskList.find((taskObj) => taskObj.tasktype === inputValueToRem);
-            const i = taskList.indexOf(newTaskObjToDelete);
-            if (i !== -1) {
-              taskList.splice(i, 1);
-            }
-            return taskList;
-          });
+          setTaskObjArr(removeTaskType());
         }}
       >
         Remove your task type
@@ -95,11 +80,11 @@ function OptionsPage() {
       <button onClick={() => safeTaskList(taskObjArr)}>safe task list</button>
       <button onClick={() => setTaskObjArr(loadTaskList(taskObjArr))}>load task list</button>
       <div>
-        <NavLink onClick={() => safeTaskList(taskObjArr)} to="/">
+        <NavLink className="navLink" onClick={() => safeTaskList(taskObjArr)} to="/">
           zurück
         </NavLink>
       </div>
-    </>
+    </div>
   );
 }
 

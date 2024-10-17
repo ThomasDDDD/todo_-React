@@ -1,4 +1,4 @@
-import Todo from '@pages/Todo';
+import Home from "./pages/Home";
 
 // Du kannst in diesem Projekt einfach über @components auf den Ordner src/components zugreifen.
 // somit kannst du mit '@components/deineDatei' importieren und musst nicht den ganzen Pfad schreiben.
@@ -9,12 +9,11 @@ import Todo from '@pages/Todo';
 // @pages
 
 function App() {
-
   return (
     <>
-      <Todo />
+      <Home />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
