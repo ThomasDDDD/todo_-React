@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
-import App from "../App.jsx";
 import OptionsPage from "../pages/OptionsPage.jsx";
 import AppWorkingPage from "../pages/AppWorkingPage.jsx";
+import Home from "../pages/Home.jsx";
 
 const AppRouter = createBrowserRouter([
   {
@@ -9,7 +9,7 @@ const AppRouter = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <App />,
+        element: <Home />,
       },
       {
         path: "options",

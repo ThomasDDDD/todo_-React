@@ -4,8 +4,16 @@ export const AppContext = createContext();
 
 function AppProvider({ children }) {
   const [taskObjArr, setTaskObjArr] = useState([
-    { tasktype: "private", tasks: [], tasktypeId: Math.floor(Math.random() * 10000) },
-    { tasktype: "job", tasks: [], tasktypeId: Math.floor(Math.random() * 10000) },
+    {
+      tasktype: "private",
+      tasks: [],
+      tasktypeId: Math.floor(Math.random() * 10000),
+    },
+    {
+      tasktype: "job",
+      tasks: [],
+      tasktypeId: Math.floor(Math.random() * 10000),
+    },
   ]);
 
   function loadTaskList(taskObjArr) {
@@ -21,6 +29,7 @@ function AppProvider({ children }) {
   function safeTaskList(taskObjArr) {
     localStorage.setItem("TaskList", JSON.stringify(taskObjArr));
   }
+
   function toSetTaskObjArr(e) {
     if (e.target.children.AddTaskTypeInput.value) {
       const newTaskObjArr = [
@@ -37,10 +46,12 @@ function AppProvider({ children }) {
       return taskObjArr;
     }
   }
+
   function removeTaskType(e) {
     const taskList = [...taskObjArr];
     const newTaskObjToDelete = taskList.find(
-      (taskObj) => taskObj.tasktype === e.target.children.RemTaskTypeSelect.value
+      (taskObj) =>
+        taskObj.tasktype === e.target.children.RemTaskTypeSelect.value
     );
     const i = taskList.indexOf(newTaskObjToDelete);
     if (i !== -1) {
@@ -49,10 +60,15 @@ function AppProvider({ children }) {
     safeTaskList(taskList);
     return taskList;
   }
+
   function deleteTask(deleteObj) {
-    const taskTypeToEdit = taskObjArr.find((tasktype) => tasktype.tasktypeId === deleteObj.tasktypeId);
+    const taskTypeToEdit = taskObjArr.find(
+      (tasktype) => tasktype.tasktypeId === deleteObj.tasktypeId
+    );
     const i = taskObjArr.indexOf(taskTypeToEdit);
-    const tasksArrToPutIn = taskTypeToEdit.tasks.filter((task) => task.taskId !== deleteObj.taskId);
+    const tasksArrToPutIn = taskTypeToEdit.tasks.filter(
+      (task) => task.taskId !== deleteObj.taskId
+    );
     const newTaskObjToPutIn = { ...taskTypeToEdit, tasks: tasksArrToPutIn };
     const newTaskObjArr = [...taskObjArr];
     newTaskObjArr.splice(i, 1, newTaskObjToPutIn);
@@ -62,7 +78,15 @@ function AppProvider({ children }) {
 
   return (
     <AppContext.Provider
-      value={{ taskObjArr, setTaskObjArr, toSetTaskObjArr, removeTaskType, loadTaskList, safeTaskList, deleteTask }}
+      value={{
+        taskObjArr,
+        setTaskObjArr,
+        toSetTaskObjArr,
+        removeTaskType,
+        loadTaskList,
+        safeTaskList,
+        deleteTask,
+      }}
     >
       {children}
     </AppContext.Provider>

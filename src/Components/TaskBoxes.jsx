@@ -1,8 +1,9 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { AppContext } from "../utils/AppContext";
 
 function TaskBoxes() {
-  const { taskObjArr, setTaskObjArr, loadTaskList, safeTaskList, deleteTask } = useContext(AppContext);
+  const { taskObjArr, setTaskObjArr, loadTaskList, deleteTask } =
+    useContext(AppContext);
 
   useEffect(() => {
     setTaskObjArr(loadTaskList(taskObjArr));
@@ -19,11 +20,22 @@ function TaskBoxes() {
 
               <input type="checkbox" id={task.taskId}></input>
               <label htmlFor={task.taskId}>Erledigt</label>
-              <button onClick={() => setTaskObjArr(deleteTask({ tasktypeId: obj.tasktypeId, taskId: task.taskId }))}>
+              <button
+                onClick={() =>
+                  setTaskObjArr(
+                    deleteTask({
+                      tasktypeId: obj.tasktypeId,
+                      taskId: task.taskId,
+                    })
+                  )
+                }
+              >
                 Task Entfernen
               </button>
               <p>{`Priorität: ${task.prio}`}</p>
-              <p>{`Fällig am: ${new Date(task.due).toLocaleDateString()} um: ${new Date(task.due)
+              <p>{`Fällig am: ${new Date(
+                task.due
+              ).toLocaleDateString()} um: ${new Date(task.due)
                 .toLocaleTimeString()
                 .slice(0, 5)} Uhr`}</p>
             </div>
